@@ -167,9 +167,12 @@ def load_cluster_scatter():
 # ── Sidebar filters ───────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("### Filters")
-    regions_all = ["All"] + sorted([
-        r[0] for r in engine.connect().execute(text("SELECT DISTINCT region FROM customers")).fetchall()
-    ])
+    try:
+        regions_all = ["All"] + sorted([
+            r[0] for r in engine.connect().execute(text("SELECT DISTINCT region FROM customers")).fetchall()
+        ])
+    except Exception:
+        regions_all = ["All"]
     sel_region = st.selectbox("Region", regions_all)
 
     contracts_all = ["All", "month-to-month", "1yr", "2yr"]
