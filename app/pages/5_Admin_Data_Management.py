@@ -13,7 +13,7 @@ import streamlit as st
 from sqlalchemy import text
 
 from app.core.data_generator import generate_dataset
-from app.core.db import SessionLocal, engine
+from app.core.db import SessionLocal, engine, init_db
 from app.core.utils import GLOBAL_CSS
 
 st.markdown(GLOBAL_CSS, unsafe_allow_html=True)
@@ -126,6 +126,7 @@ if submitted:
     try:
         with st.spinner(f"Generating {n_customers:,} customers (seed={seed}) …"):
             progress.progress(20, "Sampling archetypes …")
+            init_db()
             db = SessionLocal()
             try:
                 counts = generate_dataset(n_customers=n_customers, seed=int(seed), db=db)
